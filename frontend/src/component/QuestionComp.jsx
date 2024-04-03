@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate , Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 export default function QuestionComp() {
   const navigate = useNavigate();
   const [question, setQuestion] = useState([]);
+
   useEffect(() => {
     const callApi = async () => {
       try {
@@ -13,16 +14,20 @@ export default function QuestionComp() {
         console.log(error);
       }
     };
-    callApi();
+    callApi()
   }, []);
+
+
   const elm = question.map((data) => {
     return (
-      <Link to={`/question/${data.id}`} key={data.id} >
-      <div className="border  p-2"  >
-        <h1 className="text-2xl text-gray-600 ">{data.question}</h1>
-        <p className="text-sm">{data.questionBrief}</p>
-      </div>
-    </Link>
+
+      <Link to={`/question/${data.id}`} key={data.id}>
+        <div className="border  p-2">
+          <h1 className="text-2xl text-gray-600 ">{data.question}</h1>
+          <p className="text-sm">{data.questionBrief}</p>
+        </div>
+      </Link>
+      
     );
   });
   return (
@@ -40,8 +45,8 @@ export default function QuestionComp() {
           className="outline-none border border-gray  mx-5 p-2  rounded"
         />
       </div>
-      <div className="flex flex-col" >
-        {(question.length === 0) ? (
+      <div className="flex flex-col">
+        {question.length === 0 ? (
           <h1 className="text-2xl text-gray-600">No Question Found</h1>
         ) : null}
         {elm}

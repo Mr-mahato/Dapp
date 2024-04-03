@@ -11,8 +11,8 @@ export default function App() {
     <>
       <Routes>
         <Route path="/" element={<Home />}>
-          <Route path="/" element={<SolutionComp />} />
-          <Route path="/question/:id" element={<Review/>}/>
+          <Route index element={<SolutionComp />} />
+          <Route path="/question/:id" element={<Review />} />
         </Route>
       </Routes>
     </>

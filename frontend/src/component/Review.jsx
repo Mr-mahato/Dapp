@@ -5,12 +5,13 @@ import axios from "axios";
 export default function Review() {
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
-
+  const [loading , setLoading] = useState(true)
   const [quesSoln, setQuesSoln] = useState([]);
   const { id } = useParams();
 
   const handleSolutionSubmission = async () => {
     try {
+      setQuesSoln([...quesSoln, { name, comment }]);
       const resp = await axios.post("/api/solutionPost", {
         name,
         comment,
@@ -29,6 +30,7 @@ export default function Review() {
         const solnColl = await axios.get(`/api/getSolution/${id}`);
         console.log(solnColl.data);
         setQuesSoln(solnColl.data);
+        setLoading(false)
       } catch (error) {
         console.log(error);
       }
@@ -36,6 +38,9 @@ export default function Review() {
 
     getSolution();
   }, []);
+  if(loading){
+    return <h1>Loading...</h1>
+  }
 
   const solnColl = quesSoln.map((data) => {
     return (
