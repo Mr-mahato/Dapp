@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
+import { useData } from "../context/dataContext";
 export default function Review() {
+  const { questionState } = useData();
+  let i = 0;
   const [name, setName] = useState("");
   const [comment, setComment] = useState("");
-  const [loading , setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [quesSoln, setQuesSoln] = useState([]);
   const { id } = useParams();
+
+  const quesAsk = questionState.find((data) => data.id == id);
 
   const handleSolutionSubmission = async () => {
     try {
@@ -28,23 +32,17 @@ export default function Review() {
     const getSolution = async () => {
       try {
         const solnColl = await axios.get(`/api/getSolution/${id}`);
-        console.log(solnColl.data);
         setQuesSoln(solnColl.data);
-        setLoading(false)
       } catch (error) {
         console.log(error);
       }
     };
-
     getSolution();
-  }, []);
-  if(loading){
-    return <h1>Loading...</h1>
-  }
+  }, [id]);
 
   const solnColl = quesSoln.map((data) => {
     return (
-      <div className="bg-gray-200  p-3 rounded-md mt-2" key={data.id}>
+      <div className="bg-gray-200  p-3 rounded-md mt-2" key={i++}>
         <h1 className="text-2xl text-gray-700">{data.name}</h1>
         <p className="text-gray-600">{data.comment}</p>
       </div>
@@ -56,12 +54,8 @@ export default function Review() {
       <h1 className="text-2xl text-gray-600">Question</h1>
       {/* this is for the question segment */}
       <div className="bg-gray-200 p-3 rounded-md">
-        <h1 className="text-2xl text-gray-700">
-          What is the best way to learn React?
-        </h1>
-        <p className="text-gray-600">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod, quae.
-        </p>
+        <h1 className="text-2xl text-gray-700">{quesAsk.question}</h1>
+        <p className="text-gray-600">{quesAsk.questionBrief}</p>
       </div>
 
       <button className="self-end bg-blue-600 p-1  text-white mt-2 rounded">

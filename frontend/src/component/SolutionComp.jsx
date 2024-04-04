@@ -1,29 +1,36 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useData } from "../context/dataContext";
 export default function SolutionComp() {
   const [question, setQuestion] = useState("");
   const [questionBrief, setQuestionBrief] = useState("");
-  
+  const { updateQuestion } = useData();
   const handleSubmit = () => {
-    if (question == "" || questionBrief == "") {
-      alert("Please fill the form");
-      
-      return;
-    }
-    axios
-      .post("/api/getQuestion", {
-        question: question,
-        questionBrief: questionBrief,
-      })
-      .then((res) => {
-        console.log(res);
-        setQuestion("");
-        setQuestionBrief("")
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
+    // if (question == "" || questionBrief == "") {
+    //   alert("Please fill the form");
+
+    //   return;
+    // }
+    // axios
+    //   .post("/api/getQuestion", {
+    //     question: question,
+    //     questionBrief: questionBrief,
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     setQuestion("");
+    //     setQuestionBrief("")
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    updateQuestion({
+      question: question,
+      questionBrief: questionBrief,
+    });
+    setQuestion("");
+    setQuestionBrief("");
+  };
   return (
     <section className="solution flex flex-col flex-1 p-14 ">
       <h1 className="text-2xl">Welcome to Discussion Portal !</h1>
